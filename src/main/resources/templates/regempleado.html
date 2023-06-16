@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Empleados</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+</head>
+<body class="d-flex align-items-center justify-content-center vh-100">
+    <div class="container">
+        <h1 class="text-center mb-4">Mantenimiento de Empleados</h1>
+        <form action="/empleado/acciones/registrar" method="post" th:object="${empleado}">
+            <div class="form-group">
+                <label for="inputNom">Nombre</label> 
+                <input type="text" th:field="*{nombre}" class="form-control" id="inputNom" placeholder="Nombre">
+            </div>
+            <div class="form-group">
+                <label for="inputApe">Apellido</label> 
+                <input type="text" th:field="*{apellido}" class="form-control" id="inputApe" placeholder="Apellido">
+            </div>
+            <div class="form-group">
+                <label for="inputCat">Puesto</label> 
+                <select id="inputCat" class="form-control" th:field="*{id_puesto}">
+                    <option value="-1">Seleccione...</option>
+                    <option th:each="p : ${lstPuesto}" th:value="${p.id_puesto.toString()}" th:text="${p.des_puesto}"></option>
+                </select>
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                <a href="/empleado/acciones/listar" class="btn btn-secondary">Listar</a>
+                <a href="index.html" class="btn btn-light">Volver al Home</a>
+            </div>
+        </form>
+        <div class="text-center mt-3" th:text="${mensaje}"></div>
+    </div>
+</body>
+</html>

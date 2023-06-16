@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Formulario de inicio de sesión</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #343a40;
+    }
+    .login-container {
+      max-width: 400px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      background-color: #ffffff;
+      padding: 40px;
+      color: #343a40;
+    }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .login-container .form-group label {
+      color: #343a40;
+      font-size: 18px;
+    }
+    .login-container .form-control {
+      font-size: 16px;
+    }
+    .login-container .btn-primary {
+      background-color: #343a40;
+      border-color: #343a40;
+      font-size: 18px;
+    }
+    .login-container .btn-primary:hover {
+      background-color: #23272b;
+      border-color: #23272b;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Inicio de sesión</h2>
+    <form action="/usuario/validado" method="post" th:object="${usuarios}">
+      <div class="form-group">
+        <label for="email">Usuario:</label>
+        <input type="email"  th:field="*{usuario}"  class="form-control" id="email" placeholder="Ingresa tu correo electrónico">
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input type="password"  th:field="*{clave}"    class="form-control" id="password" placeholder="Ingresa tu contraseña">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+    </form>
+    <br>
+    <div class="alert alert-danger" role="alert" th:if="${mensaje}" th:text={mensaje}></div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

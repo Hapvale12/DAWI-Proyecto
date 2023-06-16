@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Empleados</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container">
+	<a href="/empleado/acciones/mantenimiento" class="btn btn-light mb-3">Volver</a>
+	<h3 class="mb-4">Empleados</h3>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Código</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Apellido</th>
+				<th scope="col">Puesto</th>
+				<th scope="col" style="width: 100px;">Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="e : ${lstEmpleado}">
+				<td th:text="${e.id_empleado}">1</td>
+				<td th:text="${e.nombre}"></td>
+				<td th:text="${e.apellido}"></td>
+				<td th:text="${e.getObjPuesto().getDes_puesto()}"></td>
+				<td>
+					<div class="d-flex justify-content-start">
+						<a th:href="@{/{id}/acciones/atualizar(id=${e.id_empleado})}" class="btn btn-warning mr-2">Actualizar</a>
+						<a th:href="@{/{id}/acciones/eliminar(id=${e.id_empleado})}" class="btn btn-danger">Eliminar</a>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>
