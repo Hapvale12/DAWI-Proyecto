@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.muebleria.model.Cliente;
 import com.muebleria.model.Empleado;
+import com.muebleria.model.Producto;
 import com.muebleria.repository.IClienteRepository;
 
 @Controller
@@ -24,6 +25,7 @@ public class ClienteController {
 	@GetMapping("/cliente/acciones/mantenimiento")
 	public String abrirPagCliente(Model model) {
 		model.addAttribute("cliente", new Cliente());
+		model.addAttribute("updatevalidacion", null);
 		generarLista(model);
 		return "mantenedorCliente";
 	}
@@ -101,5 +103,20 @@ public class ClienteController {
 	    return "mantenedorCliente";
 	}
 	
+	//Mostrar Cliente a Actualizar
+	@GetMapping("/cliente/acciones/actualizar/{id}")
+	public String CargarClienteXId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
+		try {
+			generarLista(model);
+			Cliente cliente = repoCli.findById(id).orElse(new Cliente());
+			model.addAttribute("cli", cliente);
+			generarLista(model);
+			return "mantenedorCliente";
+		}catch(Exception e) {
+			System.out.println(e.getLocalizedMessage());
+			return "listarProducto";
+		}
+	}
 
 }
