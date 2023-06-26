@@ -18,11 +18,30 @@ public class ClienteController {
 	@Autowired
 	private IClienteRepository repoCli;
 
-	
-	@GetMapping("/cliente/acciones/mantenimiento")
 	public String abrirPagCliente(Model model) {
 		model.addAttribute("cliente", new Cliente());
 		model.addAttribute("updatevalidacion", null);
+		generarLista(model);
+		return "mantenedorCliente";
+	}
+	
+	//Registrar Cliente
+	@PostMapping("/cliente/acciones/registrar")
+	public String registrarProducto(@ModelAttribute Cliente cliente, Model model) {
+	
+		List<Cliente> lista = new ArrayList<Cliente>();
+		lista = repoCli.findAll();
+		Object fila = repoCli.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		model.addAttribute("nuevoId", lista.get(posicion).getId_cliente() + 1);
+		try {
+			//Leer los datos ingresados
+			cliente.setId_cliente(lista.get(posicion).getId_cliente() + 1);
+			repoCli.save(cliente);
+			model.addAttribute("mensaje", "Registro Ok");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 		generarLista(model);
 		return "mantenedorCliente";
 	}
@@ -42,78 +61,57 @@ public class ClienteController {
 		model.addAttribute("cliente", new Cliente());
 		return "mantenedorCliente";
 	}
-		
-	//Registrar Clientes
-	@PostMapping("/cliente/acciones/registrar")
-	public String registrarCliente(@ModelAttribute Cliente cliente, Model model) {
-
-		List<Cliente> lista = new ArrayList<Cliente>();
-		lista = repoCli.findAll();
-		Object fila = repoCli.count();
-		int posicion = (Integer.parseInt(fila.toString())-1);
-		lista.get(posicion).getId_cliente();
-		cliente.setId_cliente(lista.get(posicion).getId_cliente()+1);
-		try {
-			repoCli.save(cliente);
-			model.addAttribute("mensaje", "Registro Exitoso");
-		}catch (Exception e) {
-			model.addAttribute("mensaje", "Error al registrar");
-			System.out.println(e.getMessage());
-		}
+	@GetMapping("/cliente/acciones/listar")
+	public String listarClientes(Model model) {
 		generarLista(model);
 		return "mantenedorCliente";
 	}
-	
-	//Actualizar
-	
-	@PostMapping("/cliente/acciones/actualizar")
-	public String actualizarCliente(@ModelAttribute("cliente") Cliente cliente ,Model model) {
-		model.addAttribute("listaClientes", repoCli.findAll());;
-		try {
-			repoCli.save(cliente);
-			model.addAttribute("mensaje", "Actualización exitosa.");
-			generarLista(model);
-		} catch (Exception e) {
-			System.out.println("Error : " + e.getMessage());
-		}
-		return "mantenedorCliente";
-	}
-	
-	//Eliminar
-	@GetMapping("/cliente/acciones/eliminar/{id}")
-	public String FormEliminarCliente(@PathVariable("id") int id, Model model) {
-		Cliente cliente = repoCli.findById(id).orElse(null);
-		model.addAttribute("cliente", cliente);
-		return "eliminarCliente";
-	}
-	
-	@PostMapping("/cliente/acciones/eliminar")
-	public String eliminarCliente(@ModelAttribute("cliente") Cliente cliente, Model model) {
-	    try {
-	    	repoCli.delete(cliente);
-	    	model.addAttribute("mensaje", "Cliente eliminado con éxito.");
-			generarLista(model);
-	    } catch (Exception e) {
-	    	model.addAttribute("mensaje", "Error al eliminar el cliente.");
-			generarLista(model);
-	    }
-	    return "mantenedorCliente";
-	}
-	
-	//Mostrar Cliente a Actualizar
+	//buscar Cliente
 	@GetMapping("/cliente/acciones/actualizar/{id}")
 	public String CargarClienteXId(@PathVariable("id") int id, Model model) {
 		model.addAttribute("updatevalidacion", "not null");
 		try {
 			generarLista(model);
 			Cliente cliente = repoCli.findById(id).orElse(new Cliente());
-			model.addAttribute("cli", cliente);
-			generarLista(model);
+			model.addAttribute("cliente", cliente);
+			model.addAttribute("listaClientes", repoCli.findAll());;
 			return "mantenedorCliente";
 		}catch(Exception e) {
-			System.out.println(e.getLocalizedMessage());
-			return "listarCliente";
+			System.out.println(e.getMessage());
+			return "mantenedorCliente";
 		}
+	}	
+	//Modificar Cliente
+		@PostMapping("/cliente/acciones/actualizar")
+		public String actualizarProducto(@ModelAttribute("cliente") Cliente cliente ,Model model) {
+			try {
+				model.addAttribute("cliente", cliente);
+				model.addAttribute("listaClientes", repoCli.findAll());;
+				repoCli.save(cliente);
+				model.addAttribute("mensaje", "Actualización Ok");
+				listarClientes(model);
+			} catch (Exception e) {
+				System.out.println("Error :( " + e.getMessage());
+			}
+			return "mantenedorCliente";
+		}
+	//Buscar para eliminar cliente
+	@GetMapping("/cliente/acciones/eliminar/{id}")
+	public String buscarProductoElmForm(@PathVariable("id") int id, Model model) {
+	    Cliente cliente = repoCli.findById(id).orElse(null);
+	    model.addAttribute("cliente", cliente);
+	    return "eliminarcliente";
 	}
-
+	@PostMapping("/cliente/acciones/eliminar")
+	public String eliminarEmpleado(@ModelAttribute("cliente") Cliente cliente, Model model) {
+	    try {
+	        repoCli.delete(cliente);
+	        model.addAttribute("mensaje", "Cliente eliminado exitosamente");
+	    } catch (Exception e) {
+	        model.addAttribute("mensaje", "Error al eliminar al cliente");
+	    }
+	    listarClientes(model);
+	    return "mantenedorCliente";
+	}
+	
 }

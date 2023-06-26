@@ -13,16 +13,19 @@ import com.muebleria.repository.IUsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UsuarioController {
-	//onjetos de repositorio
+
+	
 	@Autowired
-	private ITiposUsuarioRepository repoUsu;
+	private ITiposUsuarioRepository repoTipoUsu;
 	@Autowired
 	private IUsuarioRepository repoUsuario;
-		
+	
+	// Validar / Iniciar Sesión
 	@PostMapping("/usuario/validado")
 	public String validar(@ModelAttribute("usuarios") Usuario usuario, Model model,HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		Usuario u;
@@ -48,7 +51,7 @@ public class UsuarioController {
 	}
 	
 	
-	//Cerrar sesion//
+	//Cerrar sesion
 	@GetMapping("/logout")
 	public String cerrarSesion(HttpServletRequest request,HttpSession session,HttpServletResponse response, Model model) {
 		model.addAttribute("usuarios", new Usuario());
@@ -58,79 +61,86 @@ public class UsuarioController {
 	
 	
 	//vista registrar
-	@GetMapping("/usuario/registrar")
+	@GetMapping("/usuario/abrir")
 	public String cargarMantenimiento(Model model) {
-		model.addAttribute("usuario", new Usuario());
-		model.addAttribute("lstTipos", repoUsu.findAll());
-		return "crudusuarios";
+		model.addAttribute("Usuario", new Usuario());
+		model.addAttribute("updatevalidacion", null);
+		List<Usuario> lista = new ArrayList<Usuario>();
+		lista = repoUsuario.findAll();
+		Object fila = repoUsuario.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		model.addAttribute("ultiId", lista.get(posicion).getId_usuario());
+		generarListado(model);
+		return "mantenedorUsuario";
 	}
-	//listar usuarios
-	@GetMapping("/usuario/acciones")
-	public String generarListado(Model model) {
-		model.addAttribute("lstUsuarios", repoUsuario.findAll());
-		return"listusuarios" ;
-	}
-	@GetMapping("/{id}/usuario/")
-	public String paginaActualizar(Model model, @PathVariable("id") int id) {
-		try {
-			Usuario usuario = repoUsuario.findById(id).orElse(new Usuario());
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("lstTipos", repoUsu.findAll());
-		} catch (Exception e) {
-			System.out.println("ERROR: " + e.getMessage());
-		}
-		return "actualizausu";
+	//listar usuarios y tipos
+	public void generarListado(Model model) {
+		model.addAttribute("listaUsuarios", repoUsuario.findAll());
+		model.addAttribute("lstTipos", repoTipoUsu.findAll());
 	}
 	
-		
-	@GetMapping("/{id}/usuario/eliminar")
-	public String mostrarFormularioEliminacion(@PathVariable("id") int id, Model model) {
-		Usuario u = repoUsuario.findById(id).orElse(null);
-		model.addAttribute("usuarios", u);
-		return "eliminausu";
-	}
-	@PostMapping("/usuario/eliminar")
-	public String eliminarUsuario(@ModelAttribute("usuarios") Usuario usuario, Model model) {
+	//Registrar Usuario
+	@PostMapping("/usuario/acciones/registrar")
+	public String registrarProducto(@ModelAttribute("Usuario") Usuario usuario, Model model) {
+	
 		try {
-			repoUsuario.delete(usuario);
-			model.addAttribute("mensaje", "Usuario eliminado exitosamente");
+			//Leer los datos ingresados
+			repoUsuario.save(usuario);
+			model.addAttribute("mensaje", "Registro Ok");
 		} catch (Exception e) {
-			model.addAttribute("mensaje", "Error al eliminar el usuario");
-		    System.out.println("Error al eliminar el empleado: " + e.getMessage());
+			System.out.println("Error: " + e.getMessage());
 		}
 		generarListado(model);
-		return "listusuarios";
+		return "mantenedorUsuario";
 	}
-	
-	
-	//registrar/actualizar usuario
-	@PostMapping("/usuario")
-	public String guardarUsuario(@ModelAttribute Usuario usuario, Model model) {
-		
-		String pag = "crudusuarios";
-		System.out.println(usuario.getUsuario());
-		System.out.println(usuario);
-		model.addAttribute("lstTipos", repoUsu.findAll());
+	//Mostrar Cliente a Actualizar
+	@GetMapping("/usuario/acciones/actualizar/{id}")
+	public String CargarUsuarioXId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
 		try {
-			/*if(repoUsuario.findById(usuario.getId_usuario()).get() != null) {
-				model.addAttribute("mensaje", "Usuario Actualizado Exitosamente");
-				pag = "actualizausu";
-			}else {
-				model.addAttribute("mensaje", "Usuario Registrado Exitosamente");				
-			}*/
-			repoUsuario.save(usuario);
-			model.addAttribute("claseMensaje", "alert alert-success");
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("lstTipos", repoUsu.findAll());
-		} catch (Exception e) {
-			System.out.println("ERROR: " + e.getMessage());
-			model.addAttribute("mensaje", "Error en el Registro");
-			model.addAttribute("claseMensaje", "alert alert-danger");
+			Usuario usuario = repoUsuario.findById(id).orElse(new Usuario());
+			model.addAttribute("Usuario", usuario);
+			generarListado(model);
+			return "mantenedorUsuario";
+		}catch(Exception e) {
+			System.out.println(e.getLocalizedMessage());
+			return "mantenedorUsuario";
 		}
-		return pag;
+	}
+	//Actualizar
+	@PostMapping("/usuario/acciones/actualizar")
+	public String actualizarUsuario(@ModelAttribute("Usuario") Usuario usuario ,Model model) {
+		try {
+			repoUsuario.save(usuario);
+			model.addAttribute("mensaje", "Actualización exitosa.");
+		} catch (Exception e) {
+			System.out.println("Error : " + e.getMessage());
+			model.addAttribute("mensaje", "Error al actualizar");
+		}
+		generarListado(model);
+		return "mantenedorUsuario";
 	}
 	
-	
-	
+	//Abrir Eliminar Usuario
+	@GetMapping("/usuario/acciones/eliminar/{id}")
+	public String FormEliminarCliente(@PathVariable("id") int id, Model model) {
+		Usuario usuario = repoUsuario.findById(id).orElse(null);
+		model.addAttribute("Usuario", usuario);
+		return "eliminarUsuario";
+	}
+
+	//Eliminar Usuario
+	@PostMapping("/usuario/acciones/eliminar")
+	public String eliminarUsuario(@ModelAttribute("Usuario") Usuario usuario, Model model) {
+	    try {
+	    	repoUsuario.delete(usuario);
+	    	model.addAttribute("mensaje", "Usuario eliminado con éxito.");
+			generarListado(model);
+	    } catch (Exception e) {
+	    	model.addAttribute("mensaje", "Error al eliminar el usuario.");
+			generarListado(model);
+	    }
+	    return "mantenedorUsuario";
+	}
 
 }

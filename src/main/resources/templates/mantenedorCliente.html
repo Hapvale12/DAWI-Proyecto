@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Mantenedor Cliente</title>
+<title>Mantenimiento de Clientes</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet"	href="CSS/estilo_listado.css">
@@ -14,8 +14,8 @@
 </head>
 <body>
 <div class="titulo">
-	<h1 style="text-align:center">Distribuidora S.A.</h1>
-	<button class="boton btn btn-primary" onclick="Viajar()">Volver a Home</button>
+	<h1 style="text-align:center">Mantenimiento de Clientes</h1>
+	<button class="boton btn btn-primary" onclick="Viajar()">Volver a Mantenedores</button>
 </div>
 <div class="contenedor">
 	<div class="container">
@@ -32,7 +32,7 @@
 					</div>
 					<div class="form-group">
 						<label for="inputCod">Codigo</label> 
-						<input name="txtcodigohidden" type="text" class="form-control" id="cod_hidden" th:attr="value=${nuevoId}" disabled>
+						<input name="txtcodigohidden" type="text" class="form-control" id="cod_hidden" th:attr="value=${nuevoId}" readonly>
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Nombre</label> 
@@ -51,10 +51,10 @@
 				</form>
 				
 				<!-- FORM ACTUALIZAR -->
-				<form id="formactualizar" action="/cliente/acciones/actualizar" method="post" th:object="${cli}" th:if="${updatevalidacion != null}">
+				<form id="formactualizar" action="/cliente/acciones/actualizar" method="post" th:object="${cliente}" th:if="${updatevalidacion != null}">
 					<div class="form-group">
 						<label for="inputCod">ID</label> 
-						<input name="txtCodigo" type="text" class="form-control" th:field="*{id_cliente}"> 
+						<input name="txtCodigo" type="text" class="form-control" th:field="*{id_cliente}" readonly> 
 					</div>
 					<div class="form-group">
 						<label>Nombre</label> 
@@ -66,7 +66,7 @@
 					</div>
 					<div id="button">
 						<button id="botonActualizar" type="submit" name="mantlista" class="btn btn-primary" value="mantGuardCli">Actualizar</button>
-						<a href="/cliente/acciones/mantenimiento" class="btn btn-primary"> Nuevo</a>
+						<a href="/mantenedor/cliente" class="btn btn-primary"> Nuevo</a>
 					</div>
 				</form>
 				
@@ -151,45 +151,10 @@
 	  	gap:1rem;
 	}
 </style>
-	<script type="text/javascript">
-	
-	function activarModificar(){
-		//forms
-		 document.getElementById('formcrear').hidden = true;
-		 document.getElementById('formactualizar').hidden = false;
-		 document.getElementById('formeliminar').hidden = true;
-		 
-		 
-		 document.getElementById('cod_hidden').hidden = true;
-		 document.getElementById('cod').hidden = false;
-		 document.getElementById('ultCod').hidden = false;
-		 document.getElementById('codigo').hidden = false;
-		 document.getElementById('Cod').hidden= false;
-		 document.getElementById('nom').disabled= false;
-		 document.getElementById('ape').disabled= false; 
-		 document.getElementById('cod').disabled= false;
-	}
-	function activarCrear(){
-		//forms
-		document.getElementById('formcrear').hidden = false;
-		document.getElementById('formactualizar').hidden = true;
-		document.getElementById('formeliminar').hidden = true;
-
-
-		document.getElementById('cod_hidden').hidden = false;
-		document.getElementById('cod').hidden = true;
-		document.getElementById('ultCod').hidden = true;
-		document.getElementById('codigo').hidden = true;
-		document.getElementById('botonGrabar').disabled = false;
-		document.getElementById('nom').disabled = false;
-		document.getElementById('ape').disabled = false; 
-		document.getElementById('cod').disabled = false;	  
-	}
-	
+	<script type="text/javascript">	
 	function Viajar(){
-		location.replace('/home');	
+		location.replace('/mantenedores');	
 	}
 		
 	</script>
 </html>
-

@@ -37,10 +37,12 @@
 <body>
     <div class="container">
         <h1>Eliminar Usuario</h1>
-        <form action="/usuario/eliminar" method="post" th:object="${usuarios}">
+        <h3>¿Estás seguro de que deseas eliminar el Usuario: <span th:text="${Usuario.nombre} + ' ' + ${Usuario.apellido}"></span>?</h3>
+        
+        <form action="/usuario/acciones/eliminar" method="post" th:object="${Usuario}">
             <input type="hidden" th:field="*{id_usuario}" />
             <button type="submit" class="btn btn-danger">Eliminar</button>
-            <a href="/usuario/listado" class="btn btn-light">Cancelar</a>
+            <a href="/usuario/abrir" class="btn btn-light">Cancelar</a>
         </form>
     </div>
 </body>
