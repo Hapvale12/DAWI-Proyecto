@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario</title>
+  <!-- Agrega los enlaces a los estilos de Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Registro Usuarios</h1>
+    <form action="/usuario" method="post" th:object="${usuario}">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" th:field="*{nombre}"  class="form-control" id="nombre" name="nombre">
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
+      </div>
+      <div class="form-group">
+        <label for="usuario">Usuario:</label>
+        <input type="text" th:field="*{usuario}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="clave">Clave:</label>
+        <input type="password" th:field="*{clave}"  class="form-control" id="clave" name="clave">
+      </div>
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" th:field="*{fnacim}"      class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+      </div>
+      <div class="form-group">
+        <label for="tiposUsuario">Tipo de Usuario:</label>
+        <select class="form-control" id="tiposUsuario" th:field="*{id_tipousuario}"   name="tiposUsuario">
+          <option value="-1">Seleccione...</option>
+           <option th:each="c : ${lstTipos}" th:value="${c.id_tipousuario}" th:text="${c.descripcion}"></option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Registrar</button>
+      <a href="/usuario/acciones" class="btn btn-secondary" >Listado</a>
+		<a href="/home" class="btn btn-light">Volver</a>
+    </form>
+    <div th:class="${claseMensaje}" role="alert" th:text="${mensaje}"></div>
+  </div>
+
+  <!-- Agrega el script de Bootstrap al final del cuerpo del documento -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
