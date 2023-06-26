@@ -10,7 +10,7 @@
 <body>
 
 <div class="container">
-	<a href="/empleado/acciones/mantenimiento" class="btn btn-light mb-3">Volver</a>
+	<a href="/mantenedor/empleado" class="btn btn-light mb-3">Volver</a>
 	<h3 class="mb-4">Empleados</h3>
 	<table class="table table-striped">
 		<thead>
@@ -30,7 +30,7 @@
 				<td th:text="${e.getObjPuesto().getDes_puesto()}"></td>
 				<td>
 					<div class="d-flex justify-content-start">
-						<a th:href="@{/{id}/acciones/atualizar(id=${e.id_empleado})}" class="btn btn-warning mr-2">Actualizar</a>
+						<a th:href="@{/{id}/empleado/acciones/actualizar(id=${e.id_empleado})}" class="btn btn-warning mr-2">Actualizar</a>
 						<a th:href="@{/{id}/acciones/eliminar(id=${e.id_empleado})}" class="btn btn-danger">Eliminar</a>
 					</div>
 				</td>

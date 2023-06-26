@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     <h1>Registro Usuarios</h1>
-    <form action="/usuario/registrado" method="post" th:object="${usuarios}">
+    <form action="/usuario" method="post" th:object="${usuario}">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input type="text" th:field="*{nombre}"  class="form-control" id="nombre" name="nombre">
@@ -21,7 +21,7 @@
       </div>
       <div class="form-group">
         <label for="usuario">Usuario:</label>
-        <input type="text" th:field="*{usuario}"   class="form-control" id="usuario" name="txtusuario">
+        <input type="text" th:field="*{usuario}" class="form-control">
       </div>
       <div class="form-group">
         <label for="clave">Clave:</label>
@@ -39,7 +39,8 @@
         </select>
       </div>
       <button type="submit" class="btn btn-primary">Registrar</button>
-      <a href="/usuario/listado" class="btn btn-primary" >Listado</a>
+      <a href="/usuario/acciones" class="btn btn-secondary" >Listado</a>
+		<a href="/home" class="btn btn-light">Volver</a>
     </form>
     <div th:class="${claseMensaje}" role="alert" th:text="${mensaje}"></div>
   </div>

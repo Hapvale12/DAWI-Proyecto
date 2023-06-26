@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import com.muebleria.model.Producto;
 import com.muebleria.repository.IProductoRepository;
 import com.muebleria.repository.IProveedorRepository;
@@ -26,7 +25,6 @@ public class ProductoController {
 	private IProductoRepository repoProd;
 	
 	//Cargar pagina producto
-	@GetMapping("/producto/acciones/mantenimiento")
 	public String cargaPagProd(Model model) {
 		cargarComboProd(model);
 		return "crudproductos";
@@ -72,6 +70,9 @@ public class ProductoController {
 	@PostMapping("/producto/acciones/actualizar")
 	public String actualizarProducto(@ModelAttribute("producto") Producto producto ,Model model) {
 		try {
+			model.addAttribute("producto", producto);
+			model.addAttribute("lstTipo", tipRepo.findAll());
+			model.addAttribute("lstProveedor", proRepo.findAll());
 			repoProd.save(producto);
 			model.addAttribute("mensaje", "Actualización Ok");
 			listarProducto(model);

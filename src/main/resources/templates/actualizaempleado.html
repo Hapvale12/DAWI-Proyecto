@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="/" class="btn btn-light mb-3">Volver a Inicio</a>
+        <a href="/home" class="btn btn-light mb-3">Volver a Inicio</a>
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center">Actualizar Empleado</h1>
@@ -28,7 +28,7 @@
                         <label for="inputCat">Puesto</label> 
                         <select id="inputCat" class="form-control" th:field="*{id_puesto}">
                             <option value="-1">Seleccione...</option>
-                            <option th:each="p : ${lstPuesto}" th:value="${p.id_puesto.toString()}" th:text="${p.des_puesto}" th:selected="${p.id_puesto == empleado.objPuesto.id_puesto}"></option>
+                            <option th:each="p : ${lstPuesto}" th:value="${p.id_puesto.toString()}" th:text="${p.des_puesto}"></option>
                         </select>
                     </div>
                     

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribuidora S.A.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #1D202B;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .header a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .header a:hover {
+      background-color: #555;
+    }
+
+    .banner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: grey;
+      border-radius: 10px;
+    }
+
+    .banner h3 {
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .banner p {
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .banner img {
+      width: 50%;
+      border-radius: 10px;
+    }
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  flex-basis: calc(50% - 10px);
+  min-height: 150px;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+    .card a {
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .card a:hover {
+      color: #ccc;
+    }
+
+    .banner a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: red;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-regresar {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #e53935;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-regresar:hover {
+  background-color: #c62828;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Distribuidora S.A.</h1>
+      <a href="/logout">Cerrar Sesion</a>
+    </header>
+
+    <section class="banner">
+     <p>Ud se ha identificado como: <strong th:text="${usuarios.nombre + ' ' + usuarios.apellido}"></strong></p>
+	<p>Sesion actual: <strong th:text="${sessionId}"></strong></p>
+      <img th:src="${rutaImagen}" alt="Imagen de perfil">
+    </section>
+
+    <div class="actions">
+      <div class="card">
+        <a href="/mantenedor/empleado"><img th:src="@{/img/estrella.png}"></a>
+        <h3>Empleado</h3>
+      </div>
+
+      <div class="card">
+        <a href="/mantenedor/producto"><img th:src="@{/img/product.png}"></a>
+        <h3>Producto</h3>
+      </div>
+
+      <div class="card">
+        <a href="/proveedor/acciones/registrar"><img th:src="@{/img/prov.png}"></a>
+        <h3>Proveedor</h3>
+      </div>
+
+      <div class="card">
+        <a href="/mantenedor/cliente"><img th:src="@{/img/cliente.png}"></a>
+        <h3>Cliente</h3>
+      </div>
+      <div class="container">
+        <!-- Resto del contenido -->
+      
+        <a href="/home" class="btn-regresar">Regresar</a>
+      </div>
+       </div>
+  </div>
+</body>
+</html>

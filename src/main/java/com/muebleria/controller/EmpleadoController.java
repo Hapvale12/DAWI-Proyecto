@@ -1,5 +1,7 @@
 package com.muebleria.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,12 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import com.muebleria.model.Empleado;
 import com.muebleria.repository.IEmpleadoRepository;
 import com.muebleria.repository.IPuestoRepository;
-import com.muebleria.repository.ITipoRepository;
-
 
 @Controller
 public class EmpleadoController {
@@ -24,10 +23,9 @@ public class EmpleadoController {
 	private IEmpleadoRepository empRepo;
 	
 	//Empleado
-	@GetMapping("/empleado/acciones/mantenimiento")
 	public String manteEmpleado(Model model) {
 		cargarComboEmp(model);
-		return "regempleado";
+		return "crudempleados";
 	}
 	
 	@GetMapping("/empleado/acciones/listar")
@@ -46,13 +44,27 @@ public class EmpleadoController {
 		} catch (Exception e) {
 			System.out.println("Error :( " + e.getMessage());
 		}
-		return "regempleado";
+		return "crudempleados";
 	}
 	
 	//Update
+	@GetMapping("/{id}/empleado/acciones/actualizar")
+	public String buscarProductoModForm(@PathVariable("id") int id, Model model) {
+		try {
+			Empleado empleado = empRepo.findById(id).orElse(new Empleado());
+			model.addAttribute("empleado", empleado);
+			model.addAttribute("lstPuesto", puesRepo.findAll());
+			return "actualizaempleado";
+		}catch(Exception e) {
+			return "listempleado";
+		}
+	}
+	
 	@PostMapping("/empleado/acciones/actualizar")
 	public String actualizarEmpleado(@ModelAttribute("empleado") Empleado empleado ,Model model) {
 		try {
+			model.addAttribute("empleado", empleado);
+			model.addAttribute("lstPuesto", puesRepo.findAll());
 			empRepo.save(empleado);
 			model.addAttribute("mensaje", "Actualización Ok");
 			listarEmp(model);
@@ -90,5 +102,18 @@ public class EmpleadoController {
 	void listarEmp(Model model) {
 		model.addAttribute("lstEmpleado", empRepo.findAll());
 	}
+	
+	
+	//Filtros
+
+	public String filtrarEmpleadoXCat(Model model) {
+		listarEmp(model);
+		return "listempleado";
+	}
+	@GetMapping("/empleado/acciones/filtrar/")
+	public String filtrarEmpleado(Model model) {
 		
+	        return "consultaempleado";
+        
+	}
 }

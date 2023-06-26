@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-        <a href="/" class="btn btn-light mb-3">Volver a Inicio</a>
+        <a href="/home" class="btn btn-light mb-3">Volver a Inicio</a>
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center">Actualizar Producto</h1>
@@ -29,7 +29,7 @@
 							<label for="inputTip">Tipo Producto</label> 
 							<select th:field="*{id_tipoprod}" id="inputTipo" class="form-control" >
 								<option value="-1">Seleccione...</option>
-								<option th:each="t : ${lstTipo}" th:value="${t.id_tipoprod.toString()}" th:text="${t.des_tipoprod}" th:selected="${t.id_tipoprod == producto.objTipo.id_tipoprod}"></option>
+								<option th:each="t : ${lstTipo}" th:value="${t.id_tipoprod.toString()}" th:text="${t.des_tipoprod}"></option>
 							</select>
 						</div>
 						<!-- Provedor -->
@@ -37,7 +37,7 @@
 							<label for="inputProv">Proveedor</label> 
 								<select th:field="*{id_proveedor}" id="inputProv" class="form-control" >
 									<option value="-1">Seleccione...</option>
-									<option th:each="pr : ${lstProveedor}" th:value="${pr.id_proveedor.toString()}" th:text="${pr.raz_soc}" th:selected="${pr.id_proveedor == producto.objProveedor.id_proveedor}"></option>
+									<option th:each="pr : ${lstProveedor}" th:value="${pr.id_proveedor.toString()}" th:text="${pr.raz_soc}"></option>
 								</select>
 						</div>
 					</div>
