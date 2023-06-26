@@ -65,11 +65,6 @@ public class UsuarioController {
 	public String cargarMantenimiento(Model model) {
 		model.addAttribute("Usuario", new Usuario());
 		model.addAttribute("updatevalidacion", null);
-		List<Usuario> lista = new ArrayList<Usuario>();
-		lista = repoUsuario.findAll();
-		Object fila = repoUsuario.count();
-		int posicion = (Integer.parseInt(fila.toString())-1);
-		model.addAttribute("ultiId", lista.get(posicion).getId_usuario());
 		generarListado(model);
 		return "mantenedorUsuario";
 	}
@@ -77,6 +72,12 @@ public class UsuarioController {
 	public void generarListado(Model model) {
 		model.addAttribute("listaUsuarios", repoUsuario.findAll());
 		model.addAttribute("lstTipos", repoTipoUsu.findAll());
+		List<Usuario> lista = new ArrayList<Usuario>();
+		lista = repoUsuario.findAll();
+		Object fila = repoUsuario.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		model.addAttribute("ultiId", lista.get(posicion).getId_usuario());
+		model.addAttribute("nuevoId", lista.get(posicion).getId_usuario() + 1);
 	}
 	
 	//Registrar Usuario

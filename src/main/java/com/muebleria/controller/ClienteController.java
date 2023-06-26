@@ -36,7 +36,6 @@ public class ClienteController {
 		model.addAttribute("nuevoId", lista.get(posicion).getId_cliente() + 1);
 		try {
 			//Leer los datos ingresados
-			cliente.setId_cliente(lista.get(posicion).getId_cliente() + 1);
 			repoCli.save(cliente);
 			model.addAttribute("mensaje", "Registro Ok");
 		} catch (Exception e) {

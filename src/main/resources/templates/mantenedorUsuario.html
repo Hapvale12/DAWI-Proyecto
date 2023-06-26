@@ -29,31 +29,35 @@
 						<p id="ultCod">Ultimo codigo generado:    </p>
 						<p id="codigo" th:text="${ultiId}"></p>
 					</div>
-			      <div class="form-group">
-			        <label for="nombre">Nombre:</label>
-			        <input type="text" th:field="*{nombre}"  class="form-control" id="nombre" name="nombre">
-			      </div>
-			      <div class="form-group">
-			        <label for="apellido">Apellido:</label>
-			        <input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
-			      </div>
-			      <div class="form-group">
-			        <label>Usuario:</label>
-			        <input type="text" th:field="*{usuario}" class="form-control">
-			      </div>
-			      <div class="form-group">
-			        <label for="clave">Clave:</label>
-			        <input type="text" th:field="*{clave}"  class="form-control" id="clave" name="clave">
-			      </div>
-			      <div class="form-group">
-			        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-			        <input type="date" th:field="*{fnacim}"      class="form-control" id="fechaNacimiento" name="fechaNacimiento">
-			      </div>
+					<div class="form-group">
+						<label for="inputCod">ID:</label> 
+						<input name="txtcodigohidden" type="text" class="form-control" id="cod_hidden" th:attr="value=${nuevoId}" readonly>
+					</div>
+			      	<div class="form-group">
+			        	<label for="nombre">Nombre:</label>
+			        	<input type="text" th:field="*{nombre}" class="form-control" id="nombre" name="nombre">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="apellido">Apellido:</label>
+			        	<input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
+			      	</div>
+			      	<div class="form-group">
+			        	<label>Usuario:</label>
+			        	<input type="text" th:field="*{usuario}" class="form-control">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="clave">Clave:</label>
+			        	<input type="text" th:field="*{clave}"  class="form-control" id="clave" name="clave">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="fechaNacimiento">Fecha de Nacimiento:</label>
+			        	<input type="date" th:field="*{fnacim}"      class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+			      	</div>
 			      	<div class="form-group">
 				        <label for="tiposUsuario">Tipo de Usuario:</label>
 				        <select class="form-control" id="tiposUsuario" th:field="*{id_tipousuario}"   name="tiposUsuario">
-				          <option value="-1">Seleccione...</option>
-				           <option th:each="c : ${lstTipos}" th:value="${c.id_tipousuario}" th:text="${c.descripcion}"></option>
+				          	<option value="-1">Seleccione...</option>
+				           	<option th:each="c : ${lstTipos}" th:value="${c.id_tipousuario}" th:text="${c.descripcion}"></option>
 				        </select>
 					</div>
 			        <div id="button">

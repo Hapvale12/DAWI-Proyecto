@@ -26,7 +26,7 @@ public class MantenedorController {
 	@GetMapping("/mantenedor/empleado")
 	public String crudEmpleados(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		empController.manteEmpleado(model);
-		return "crudempleados";
+		return "mantenedorempleado";
 	}
 	@GetMapping("/mantenedor/producto")
 	public String crudProductos(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {

@@ -1,5 +1,6 @@
 package com.muebleria.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.muebleria.model.Cliente;
 import com.muebleria.model.Empleado;
+import com.muebleria.model.Puesto;
+import com.muebleria.model.Usuario;
 import com.muebleria.repository.IEmpleadoRepository;
 import com.muebleria.repository.IPuestoRepository;
 
@@ -24,96 +30,72 @@ public class EmpleadoController {
 	
 	//Empleado
 	public String manteEmpleado(Model model) {
-		cargarComboEmp(model);
-		return "crudempleados";
+		model.addAttribute("empleado", new Empleado());
+		model.addAttribute("updatevalidacion", null);
+		generarListado(model);
+		return "mantenedorEmpleado";
 	}
 	
-	@GetMapping("/empleado/acciones/listar")
-	public String listarEmpleado(Model model) {
-		listarEmp(model);
-		return "listempleado";
+	public String generarListado(Model model) {
+		model.addAttribute("listaEmpleados", empRepo.findAll());
+		model.addAttribute("listaPuestos", puesRepo.findAll());
+		List<Empleado> lista = new ArrayList<Empleado>();
+		lista = empRepo.findAll();
+		Object fila = empRepo.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		model.addAttribute("ultiId", lista.get(posicion).getId_empleado());
+		model.addAttribute("nuevoId", lista.get(posicion).getId_empleado() + 1);
+		return "mantenedorEmpleado";
 	}
 	
-	//Insert
+	//Registrar Cliente
 	@PostMapping("/empleado/acciones/registrar")
-	public String registrarEmpleado(@ModelAttribute Empleado empleado ,Model model) {
+	public String registrarEmplado(@ModelAttribute("empleado") Empleado empleado, Model model) {
+
 		try {
+			//Leer los datos ingresados
 			empRepo.save(empleado);
 			model.addAttribute("mensaje", "Registro Ok");
-			cargarComboEmp(model);
+			generarListado(model);
 		} catch (Exception e) {
-			System.out.println("Error :( " + e.getMessage());
+	
+			model.addAttribute("mensaje", "Error al registrar");
+			System.out.println("Error: " + e.getMessage());
+			generarListado(model);
 		}
-		return "crudempleados";
+		return "mantenedorEmpleado";
 	}
 	
-	//Update
-	@GetMapping("/{id}/empleado/acciones/actualizar")
-	public String buscarProductoModForm(@PathVariable("id") int id, Model model) {
+	//Mostrar Empleado a Actualizar
+	@GetMapping("/empleado/acciones/actualizar/{id}")
+	public String CargarEmpleadoXId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
 		try {
 			Empleado empleado = empRepo.findById(id).orElse(new Empleado());
 			model.addAttribute("empleado", empleado);
-			model.addAttribute("lstPuesto", puesRepo.findAll());
-			return "actualizaempleado";
+			generarListado(model);
+			return "mantenedorEmpleado";
 		}catch(Exception e) {
-			return "listempleado";
+			System.out.println(e.getLocalizedMessage());
+			return "mantenedorEmpleado";
 		}
 	}
-	
-	@PostMapping("/empleado/acciones/actualizar")
-	public String actualizarEmpleado(@ModelAttribute("empleado") Empleado empleado ,Model model) {
-		try {
-			model.addAttribute("empleado", empleado);
-			model.addAttribute("lstPuesto", puesRepo.findAll());
-			empRepo.save(empleado);
-			model.addAttribute("mensaje", "Actualización Ok");
-			listarEmp(model);
-		} catch (Exception e) {
-			System.out.println("Error :( " + e.getMessage());
-		}
-		return "actualizaempleado";
-	}
-	//Delete
-	@GetMapping("/{id}/acciones/eliminar")
-	public String mostrarFormularioEliminacion(@PathVariable("id") int id, Model model) {
-	    Empleado empleado = empRepo.findById(id).orElse(null);
-	    model.addAttribute("empleado", empleado);
-	    return "eliminarEmpleado";
-	}
-	@PostMapping("/empleado/acciones/eliminar")
-	public String eliminarEmpleado(@ModelAttribute("empleado") Empleado empleado, Model model) {
-	    try {
-	        empRepo.delete(empleado);
-	        model.addAttribute("mensaje", "Empleado eliminado exitosamente");
-	    } catch (Exception e) {
-	        model.addAttribute("mensaje", "Error al eliminar el empleado");
-	        System.out.println("Error al eliminar el empleado: " + e.getMessage());
-	    }
-	    listarEmp(model);
-	    return "listempleado";
-	}
-	
-	
-	//metodos
-	void cargarComboEmp(Model model) {
-		model.addAttribute("lstPuesto", puesRepo.findAll());
-		model.addAttribute("empleado", new Empleado());
-	}
-	void listarEmp(Model model) {
-		model.addAttribute("lstEmpleado", empRepo.findAll());
-	}
-	
-	
-	//Filtros
 
-	public String filtrarEmpleadoXCat(Model model) {
-		listarEmp(model);
-		return "listempleado";
-	}
-	@GetMapping("/empleado/acciones/filtrar/")
-	public String filtrarEmpleado(Model model) {
-		
-	        return "consultaempleado";
-        
-	}
+	//Actualizar
+	@PostMapping("/empleado/acciones/actualizar")
+	public String actualizarEmpleado(@ModelAttribute("empleado") Empleado empleado, Model model) {
+		try {
+			generarListado(model);
+			empRepo.save(empleado);
+			model.addAttribute("empleado", empleado);
+			model.addAttribute("mensaje", "Actualización exitosa.");
+			model.addAttribute("listaEmpleados", empRepo.findAll());
+		} catch (Exception e) {
+			System.out.println("Error : " + e.getMessage());
+			model.addAttribute("mensaje", "Error al actualizar");
+			model.addAttribute("listaEmpleados", empRepo.findAll());
+			generarListado(model);
+		}
+		return "mantenedorEmpleado";
+	}	
 }
