@@ -33,7 +33,4 @@ public class MantenedorController {
 		prodController.cargaPagProd(model);
 		return "crudproductos";
 	}
-	
-	
-	
 }

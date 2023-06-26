@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Formulario de inicio de sesión</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #121212;
+      color: #f8f8f8;
+      font-family: Arial, sans-serif;
+    }
+    .login-container {
+      max-width: 800px; /* Aumentamos el ancho máximo del contenedor */
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      background-color: #1f1f1f;
+      padding: 40px;
+      margin: 0 auto;
+    }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .login-container .form-group label {
+      color: #f8f8f8;
+      font-size: 18px;
+    }
+    .login-container .form-control {
+      font-size: 16px;
+      background-color: #343a40;
+      color: #f8f8f8;
+    }
+    .login-container .btn-primary {
+      background-color: #343a40;
+      border-color: #343a40;
+      font-size: 18px;
+      width: 100%;
+    }
+    .login-container .btn-primary:hover {
+      background-color: #23272b;
+      border-color: #23272b;
+    }
+    .alert-danger {
+      margin-top: 20px;
+      text-align: center;
+      background-color: #721c24;
+      color: #f8f8f8;
+      border-color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Inicio de sesión</h2>
+    <form action="/usuario/validado" method="post" th:object="${usuarios}">
+      <div class="form-group">
+        <label for="email">Usuario:</label>
+        <input type="email" th:field="*{usuario}" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input type="password" th:field="*{clave}" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    </form>
+    <br>
+    <div class="alert alert-danger" role="alert" th:if="${mensaje}" th:text="${mensaje}"></div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

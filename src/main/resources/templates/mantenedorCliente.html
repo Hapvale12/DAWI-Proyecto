@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Mantenedor Cliente</title>
+<title>Mantenimiento de Clientes</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet"	href="CSS/estilo_listado.css">
@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="titulo">
-	<h1 style="text-align:center">Distribuidora S.A.</h1>
+	<h1 style="text-align:center">Mantenimiento de Clientes</h1>
 	<button class="boton btn btn-primary" onclick="Viajar()">Volver a Home</button>
 </div>
 <div class="contenedor">
@@ -151,41 +151,7 @@
 	  	gap:1rem;
 	}
 </style>
-	<script type="text/javascript">
-	
-	function activarModificar(){
-		//forms
-		 document.getElementById('formcrear').hidden = true;
-		 document.getElementById('formactualizar').hidden = false;
-		 document.getElementById('formeliminar').hidden = true;
-		 
-		 
-		 document.getElementById('cod_hidden').hidden = true;
-		 document.getElementById('cod').hidden = false;
-		 document.getElementById('ultCod').hidden = false;
-		 document.getElementById('codigo').hidden = false;
-		 document.getElementById('Cod').hidden= false;
-		 document.getElementById('nom').disabled= false;
-		 document.getElementById('ape').disabled= false; 
-		 document.getElementById('cod').disabled= false;
-	}
-	function activarCrear(){
-		//forms
-		document.getElementById('formcrear').hidden = false;
-		document.getElementById('formactualizar').hidden = true;
-		document.getElementById('formeliminar').hidden = true;
-
-
-		document.getElementById('cod_hidden').hidden = false;
-		document.getElementById('cod').hidden = true;
-		document.getElementById('ultCod').hidden = true;
-		document.getElementById('codigo').hidden = true;
-		document.getElementById('botonGrabar').disabled = false;
-		document.getElementById('nom').disabled = false;
-		document.getElementById('ape').disabled = false; 
-		document.getElementById('cod').disabled = false;	  
-	}
-	
+	<script type="text/javascript">	
 	function Viajar(){
 		location.replace('/home');	
 	}
