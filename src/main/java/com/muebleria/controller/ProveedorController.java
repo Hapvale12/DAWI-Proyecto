@@ -1,5 +1,8 @@
 package com.muebleria.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.muebleria.model.Cliente;
 import com.muebleria.model.Proveedor;
 import com.muebleria.repository.IProveedorRepository;
 
@@ -16,106 +18,103 @@ import com.muebleria.repository.IProveedorRepository;
 public class ProveedorController {
 
 	@Autowired
-	private IProveedorRepository proRepo;
+	private IProveedorRepository repoProve;
 
-	// Proveedor
-	public String manteProveedor(Model model) {
-		return "regproveedor";
-	}
-
-	@GetMapping("/proveedor/acciones/listar")
-	public String listarProveedor(Model model) {
-		listarPro(model);
-		return "listarProveedor";
-	}
-
-	/*
-	 * // Insert
-	 * 
-	 * @GetMapping("/proveedor/acciones/registrar") public String
-	 * registrarProveedor(@ModelAttribute Model model) {
-	 * model.addAttribute("proveedores", new Proveedor()); return "crudproveedores";
-	 * }
-	 * 
-	 * @PostMapping("/proveedor/registrado") public String
-	 * guardarUsuario(@ModelAttribute("proveedores") Proveedor proveedor, Model
-	 * model) { System.out.println(proveedor); //guarde en la tabla usando
-	 * repository try { proRepo.save(proveedor); model.addAttribute("mensaje",
-	 * "Proveedor Registrado Exitosamente"); model.addAttribute("claseMensaje",
-	 * "alert alert-success"); } catch (Exception e) { model.addAttribute("mensaje",
-	 * "Error en el Registro"); model.addAttribute("claseMensaje",
-	 * "alert alert-danger"); } return "crudproveedores"; }
-	 */
-
-	@GetMapping("/proveedor/acciones/registrar")
-	public String cargaryEnviarDatos(Model model) {
+	@GetMapping("/proveedor/acciones/mantenimiento")
+	public String abrirPagProveedor(Model model) {
 		model.addAttribute("proveedor", new Proveedor());
-		return "crudproveedores";
+		model.addAttribute("updatevalidacion", null);
+		generarLista(model);
+		return "mantenedorProveedor";
 	}
+		
+	//Listar Clientes
+	public String generarLista(Model model) {
+		model.addAttribute("listaProveedores", repoProve.findAll());
+		
+		//Lo que panchito no supo resolver
+		
+		List<Proveedor> lista = new ArrayList<Proveedor>();
+		lista = repoProve.findAll();
+		Object fila = repoProve.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		model.addAttribute("ultiId", lista.get(posicion).getId_proveedor());
+		model.addAttribute("nuevoId", lista.get(posicion).getId_proveedor() + 1);
+		model.addAttribute("proveedor", new Proveedor());
+		return "mantenedorProveedor";
+	}
+		
+	//Registrar Clientes
+	@PostMapping("/proveedor/acciones/registrar")
+	public String registrarProveedor(@ModelAttribute Proveedor proveedor, Model model) {
 
-	@PostMapping("/leer/registro/proveedor")
-	public String leerDatos(@ModelAttribute Proveedor proveedor, Model model) {
-		System.out.println(proveedor);
+		List<Proveedor> lista = new ArrayList<Proveedor>();
+		lista = repoProve.findAll();
+		Object fila = repoProve.count();
+		int posicion = (Integer.parseInt(fila.toString())-1);
+		lista.get(posicion).getId_proveedor();
+		proveedor.setId_proveedor(lista.get(posicion).getId_proveedor()+1);
 		try {
-			proRepo.save(proveedor);
-			model.addAttribute("mensaje", "Registro de Mascota");
-		} catch (Exception e) {
-			model.addAttribute("mensaje", " Error en el Registro de Mascota");
+			repoProve.save(proveedor);
+			model.addAttribute("mensaje", "Registro Exitoso");
+		}catch (Exception e) {
+			model.addAttribute("mensaje", "Error al registrar");
+			System.out.println(e.getMessage());
 		}
-		return "crudproveedores";
+		generarLista(model);
+		return "mantenedorProveedor";
 	}
-
-	// Update
-	@GetMapping("/{id}/acciones/proveedor/actualizar")
-	public String buscarProductoModForm(@PathVariable("id") int id, Model model) {
-		try {
-			Proveedor proveedor = proRepo.findById(id).orElse(new Proveedor());
-			model.addAttribute("proveedor", proveedor);
-			return "actualizarProveedor";
-		} catch (Exception e) {
-			return "listarProveedor";
-		}
-	}
-
+	
+	//Actualizar
+	
 	@PostMapping("/proveedor/acciones/actualizar")
-	public String actualizarProveedor(@ModelAttribute("proveedor") Proveedor proveedor, Model model) {
+	public String actualizarProveedor(@ModelAttribute("proveedor") Proveedor proveedor ,Model model) {
+		model.addAttribute("listaProveedores", repoProve.findAll());;
 		try {
-			model.addAttribute("proveedor", proveedor);
-			model.addAttribute("lstProveedor", proRepo.findAll());
-			System.out.println("\n\n id=" + proveedor.getId_proveedor() + "\n\n" + proveedor.getRaz_soc() + "\n\n"
-					+ proveedor.getRuc());
-			proRepo.save(proveedor);
-			model.addAttribute("mensaje", "Actualización Ok");
+			repoProve.save(proveedor);
+			model.addAttribute("mensaje", "Actualización exitosa.");
+			generarLista(model);
 		} catch (Exception e) {
-			System.out.println("Error :( " + e.getMessage());
+			System.out.println("Error : " + e.getMessage());
 		}
-		return "listarProveedor";
+		return "mantenedorProveedor";
 	}
-
-	// Delete
-
-	@GetMapping("/{id}/acciones/proveedor/eliminar")
-	public String buscarProveedorElmForm(@PathVariable("id") int id, Model model) {
-		Proveedor proveedor = proRepo.findById(id).orElse(null);
+	
+	//Eliminar
+	@GetMapping("/proveedor/acciones/eliminar/{id}")
+	public String FormEliminarCliente(@PathVariable("id") int id, Model model) {
+		Proveedor proveedor = repoProve.findById(id).orElse(null);
 		model.addAttribute("proveedor", proveedor);
 		return "eliminarProveedor";
 	}
-
-	@PostMapping("/proveedor/eliminar")
-	public String eliminarEmpleado(@ModelAttribute("proveedor") Proveedor proveedor, Model model) {
+	
+	@PostMapping("/proveedor/acciones/eliminar")
+	public String eliminarProveedor(@ModelAttribute("proveedor") Proveedor proveedor, Model model) {
 	    try {
-	        proRepo.delete(proveedor);
-	        model.addAttribute("mensaje", "Proveedor eliminado exitosamente");
+	    	repoProve.delete(proveedor);
+	    	model.addAttribute("mensaje", "Proveedor eliminado con éxito.");
+			generarLista(model);
 	    } catch (Exception e) {
-	        model.addAttribute("mensaje", "Error al eliminar al proveedor");
+	    	model.addAttribute("mensaje", "Error al eliminar el Proveedor.");
+			generarLista(model);
 	    }
-	    listarProveedor(model);
-	    return "listarproveedor";
+	    return "mantenedorProveedor";
 	}
-
-	// METODOS
-	void listarPro(Model model) {
-		model.addAttribute("lstProveedor", proRepo.findAll());
+	
+	//Mostrar Cliente a Actualizar
+	@GetMapping("/proveedor/acciones/actualizar/{id}")
+	public String CargarProveedorXId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
+		try {
+			generarLista(model);
+			Proveedor proveedor = repoProve.findById(id).orElse(new Proveedor());
+			model.addAttribute("prov", proveedor);
+			generarLista(model);
+			return "mantenedorProveedor";
+		}catch(Exception e) {
+			System.out.println(e.getLocalizedMessage());
+			return "listarProveedor";
+		}
 	}
 
 }
