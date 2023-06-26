@@ -38,7 +38,7 @@
     <div class="container">
         <h1>Eliminar Proveedor</h1>
         <h3>¿Estás seguro de que deseas eliminar el proveedor: <span th:text="${proveedor.raz_soc}"></span>?</h3>
-        <form action="/proveedor/eliminar" method="post" th:object="${proveedor}">
+        <form action="/proveedor/acciones/eliminar" method="post" th:object="${proveedor}">
             <input type="hidden" th:field="*{id_proveedor}" />
             <button type="submit" class="btn btn-danger">Eliminar</button>
             <a href="/proveedor/acciones/listar" class="btn btn-light">Cancelar</a>

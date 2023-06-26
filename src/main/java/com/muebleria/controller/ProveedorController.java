@@ -28,11 +28,9 @@ public class ProveedorController {
 		return "mantenedorProveedor";
 	}
 		
-	//Listar Clientes
+	//Listar Proveedores
 	public String generarLista(Model model) {
 		model.addAttribute("listaProveedores", repoProve.findAll());
-		
-		//Lo que panchito no supo resolver
 		
 		List<Proveedor> lista = new ArrayList<Proveedor>();
 		lista = repoProve.findAll();
@@ -44,7 +42,7 @@ public class ProveedorController {
 		return "mantenedorProveedor";
 	}
 		
-	//Registrar Clientes
+	//Registrar Proveedores
 	@PostMapping("/proveedor/acciones/registrar")
 	public String registrarProveedor(@ModelAttribute Proveedor proveedor, Model model) {
 
@@ -65,7 +63,7 @@ public class ProveedorController {
 		return "mantenedorProveedor";
 	}
 	
-	//Actualizar
+	//Actualizar Proveedores
 	
 	@PostMapping("/proveedor/acciones/actualizar")
 	public String actualizarProveedor(@ModelAttribute("proveedor") Proveedor proveedor ,Model model) {
@@ -80,9 +78,9 @@ public class ProveedorController {
 		return "mantenedorProveedor";
 	}
 	
-	//Eliminar
+	//Eliminar Proveedores
 	@GetMapping("/proveedor/acciones/eliminar/{id}")
-	public String FormEliminarCliente(@PathVariable("id") int id, Model model) {
+	public String FormEliminarProveedor(@PathVariable("id") int id, Model model) {
 		Proveedor proveedor = repoProve.findById(id).orElse(null);
 		model.addAttribute("proveedor", proveedor);
 		return "eliminarProveedor";
