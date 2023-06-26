@@ -20,8 +20,9 @@ public class ClienteController {
 
 	public String abrirPagCliente(Model model) {
 		model.addAttribute("cliente", new Cliente());
+		model.addAttribute("updatevalidacion", null);
 		generarLista(model);
-		return "crudclientes";
+		return "mantenedorCliente";
 	}
 	
 	//Registrar Cliente
@@ -41,7 +42,8 @@ public class ClienteController {
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}
-		return "crudclientes";
+		generarLista(model);
+		return "mantenedorCliente";
 	}
 		
 	//Listar Clientes
@@ -62,19 +64,21 @@ public class ClienteController {
 	@GetMapping("/cliente/acciones/listar")
 	public String listarClientes(Model model) {
 		generarLista(model);
-		return "listarcliente";
+		return "mantenedorCliente";
 	}
 	//buscar Cliente
 	@GetMapping("/cliente/acciones/actualizar/{id}")
-	public String buscarProductoModForm(@PathVariable("id") int id, Model model) {
+	public String CargarClienteXId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
 		try {
+			generarLista(model);
 			Cliente cliente = repoCli.findById(id).orElse(new Cliente());
 			model.addAttribute("cliente", cliente);
 			model.addAttribute("listaClientes", repoCli.findAll());;
-			return "actualizarcliente";
+			return "mantenedorCliente";
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
-			return "listarcliente";
+			return "mantenedorCliente";
 		}
 	}	
 	//Modificar Cliente
@@ -89,7 +93,7 @@ public class ClienteController {
 			} catch (Exception e) {
 				System.out.println("Error :( " + e.getMessage());
 			}
-			return "listarcliente";
+			return "mantenedorCliente";
 		}
 	//Buscar para eliminar cliente
 	@GetMapping("/cliente/acciones/eliminar/{id}")
@@ -107,7 +111,7 @@ public class ClienteController {
 	        model.addAttribute("mensaje", "Error al eliminar al cliente");
 	    }
 	    listarClientes(model);
-	    return "listarcliente";
+	    return "mantenedorCliente";
 	}
 	
 }

@@ -21,7 +21,7 @@ public class MantenedorController {
 	@GetMapping("/mantenedor/cliente")
 	public String crudClientes(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		cliController.abrirPagCliente(model);
-		return "crudclientes";
+		return "mantenedorcliente";
 	}
 	@GetMapping("/mantenedor/empleado")
 	public String crudEmpleados(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
