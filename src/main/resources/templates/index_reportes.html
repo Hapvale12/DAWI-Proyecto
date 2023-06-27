@@ -54,9 +54,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+	  padding: 20px 50px; 
       background-color: grey;
       border-radius: 10px;
+      margin-bottom: 1.5rem;
     }
 
     .banner h3 {
@@ -72,7 +73,7 @@
     }
 
     .banner img {
-      width: 50%;
+      width: 20%;
       border-radius: 10px;
     }
 
@@ -114,20 +115,27 @@
       text-decoration: none;
       transition: background-color 0.3s ease;
     }
-
+    
     .btn-regresar {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #e53935;
-  color: #fff;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
+  		display: inline-block;
+  		padding: 15px 25px;
+  		background-color: #e53935;
+  		color: #fff;
+  		border-radius: 5px;
+  		text-decoration: none;
+  		transition: background-color 0.3s ease;
+	}
 
-.btn-regresar:hover {
-  background-color: #c62828;
-}
+	.btn-regresar:hover {
+  		background-color: #c62828;
+	}
+	.home{
+		display:flex;
+		flex-direction:row;
+		justify-content:center;
+		margin:2rem 0 4rem 0;
+	}
+
 
   </style>
 </head>
@@ -140,35 +148,34 @@
 
     <section class="banner">
      <p>Ud se ha identificado como: <strong th:text="${usuarios.nombre + ' ' + usuarios.apellido}"></strong></p>
-	<p>Sesion actual: <strong th:text="${sessionId}"></strong></p>
       <img th:src="${rutaImagen}" alt="Imagen de perfil">
     </section>
 
     <div class="actions">
-      <div class="card">
-        <a href="/reporte/producto" target="_BLANK"><img th:src="@{/img/product.png}"></a>
-        <h3>Reporte Producto</h3>
-      </div>
-      <div class="card">
-        <a href="/grafico/producto" target="_BLANK"><img th:src="@{/img/gra.png}"></a>
-        <h3>Grafico Producto</h3>
-      </div>
+      	<div class="card">
+        	<a href="/reporte/producto" target="_BLANK"><img th:src="@{/img/product.png}"></a>
+        	<h3>Reporte Producto</h3>
+      	</div>
+      	<div class="card">
+        	<a href="/grafico/producto" target="_BLANK"><img th:src="@{/img/gra.png}"></a>
+        	<h3>Grafico Producto</h3>
+      	</div>
 
-      <div class="card">
-        <a href="/reporte/empleado" target="_BLANK"><img th:src="@{/img/empleado.png}"></a>
-        <h3>Reporte Empleado</h3>
-      </div>
+      	<div class="card">
+        	<a href="/reporte/empleado" target="_BLANK"><img th:src="@{/img/empleado.png}"></a>
+        	<h3>Reporte Empleado</h3>
+      	</div>
 
-      <div class="card">
-        <a href="/reporte/proveedor" target="_BLANK"><img th:src="@{/img/prov.png}"></a>
-        <h3>Reporte Proveedor</h3>
-      </div>
-      <div class="container">
-        <!-- Resto del contenido -->
-      
-        <a href="/home" class="btn-regresar">Regresar</a>
-      </div>
+      	<div class="card">
+        	<a href="/reporte/proveedor" target="_BLANK"><img th:src="@{/img/prov.png}"></a>
+        	<h3>Reporte Proveedor</h3>
+      	</div>
        </div>
   </div>
+  
+      <div class="home">
+     		<!-- Resto del contenido -->
+        	<a href="/home" class="btn-regresar">Regresar</a>
+      </div>
 </body>
 </html>

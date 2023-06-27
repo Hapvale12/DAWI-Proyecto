@@ -7,6 +7,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 
     <style>
+	    body{
+	      font-family: 'Quicksand', sans-serif;
+	      background-color: #1D202B;
+	      color:lightgray;
+	    }
         .container {
             max-width: 400px;
             margin-top: 50px;
@@ -39,7 +44,7 @@
         <form action="/producto/acciones/eliminar" method="post" th:object="${producto}">
             <input type="hidden" th:field="*{id_prod}" />
             <button type="submit" class="btn btn-danger">Eliminar</button>
-            <a href="/producto/mantenimiento/listar" class="btn btn-light">Cancelar</a>
+            <a href="/mantenedor/producto" class="btn btn-light">Cancelar</a>
         </form>
     </div>
 </body>

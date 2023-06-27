@@ -22,7 +22,7 @@ public class ProyectoController {
 		model.addAttribute("usuarios", new Usuario());
 		return "loginusu";
 	}
-	
+
 	@GetMapping("/home")
 	public String Inicio(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response){
 		Usuario u;
@@ -34,7 +34,6 @@ public class ProyectoController {
 		Mantenedores(model, request, session, response);
 		return "index";
 	}
-
 	@GetMapping("/mantenedores")
 	public String Mantenedores(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		Usuario u;

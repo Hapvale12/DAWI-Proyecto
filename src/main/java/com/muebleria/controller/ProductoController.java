@@ -74,6 +74,7 @@ public class ProductoController {
 	//Actualizar
 	@PostMapping("/producto/acciones/actualizar")
 	public String actualizarProducto(@ModelAttribute("producto") Producto producto, Model model) {
+		System.out.println(producto);
 		try {
 			repoProd.save(producto);
 			model.addAttribute("producto", producto);
