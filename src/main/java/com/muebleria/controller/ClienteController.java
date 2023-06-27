@@ -102,7 +102,7 @@ public class ClienteController {
 	    return "eliminarcliente";
 	}
 	@PostMapping("/cliente/acciones/eliminar")
-	public String eliminarEmpleado(@ModelAttribute("cliente") Cliente cliente, Model model) {
+	public String eliminarCliente(@ModelAttribute("cliente") Cliente cliente, Model model) {
 	    try {
 	        repoCli.delete(cliente);
 	        model.addAttribute("mensaje", "Cliente eliminado exitosamente");

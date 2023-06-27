@@ -10,12 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.muebleria.model.Cliente;
 import com.muebleria.model.Empleado;
-import com.muebleria.model.Puesto;
-import com.muebleria.model.Usuario;
 import com.muebleria.repository.IEmpleadoRepository;
 import com.muebleria.repository.IPuestoRepository;
 
@@ -85,17 +80,43 @@ public class EmpleadoController {
 	@PostMapping("/empleado/acciones/actualizar")
 	public String actualizarEmpleado(@ModelAttribute("empleado") Empleado empleado, Model model) {
 		try {
-			generarListado(model);
 			empRepo.save(empleado);
 			model.addAttribute("empleado", empleado);
 			model.addAttribute("mensaje", "Actualización exitosa.");
 			model.addAttribute("listaEmpleados", empRepo.findAll());
+			generarListado(model);
 		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage());
 			model.addAttribute("mensaje", "Error al actualizar");
 			model.addAttribute("listaEmpleados", empRepo.findAll());
 			generarListado(model);
 		}
-		return "mantenedorEmpleado";
+		return "pagActualizarEmps";
 	}	
+	@GetMapping("/redirigirEmpleado")
+	public String redirigir(Model model) {
+		manteEmpleado(model);
+		model.addAttribute("mensaje", "Actualización exitosa.");
+		model.addAttribute("listaEmpleados", empRepo.findAll());
+		return "mantenedorEmpleado";
+	}
+	
+	//Buscar para eliminar empleado
+		@GetMapping("/empleado/acciones/eliminar/{id}")
+		public String buscarEmpleadoAEliminar(@PathVariable("id") int id, Model model) {
+		    Empleado empleado = empRepo.findById(id).orElse(null);
+		    model.addAttribute("empleado", empleado);
+		    return "eliminarEmpleado";
+		}
+		@PostMapping("/empleado/acciones/eliminar")
+		public String eliminarEmpleado(@ModelAttribute("empleado") Empleado empleado, Model model) {
+		    try {
+		        empRepo.delete(empleado);
+		        model.addAttribute("mensaje", "Cliente eliminado exitosamente");
+		    } catch (Exception e) {
+		        model.addAttribute("mensaje", "Error al eliminar al cliente");
+		    }
+		    generarListado(model);
+		    return "mantenedorEmpleado";
+		}
 }
