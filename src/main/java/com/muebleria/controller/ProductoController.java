@@ -34,7 +34,7 @@ public class ProductoController {
 	
 	//Generar listado
 	public String generarListado(Model model) {
-		model.addAttribute("producto", new Producto());
+		model.addAttribute("lstProducto", repoProd.findAll());
 		model.addAttribute("lstTipo", repoTipo.findAll());
 		model.addAttribute("lstProveedor", repoProv.findAll());
 		return "mantenedorProducto";
@@ -86,7 +86,7 @@ public class ProductoController {
 			model.addAttribute("lstProducto", repoProd.findAll());
 			generarListado(model);
 		}
-		return "pagActualizarProds";
+		return "productoRedirigir";
 	}	
 	//Redirigir a producto	
 	@GetMapping("/redirigirProducto")

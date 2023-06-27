@@ -33,7 +33,7 @@ public class MantenedorController {
 	@GetMapping("/mantenedor/producto")
 	public String crudProductos(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		prodController.manteProducto(model);
-		return "crudproductos";
+		return "mantenedorProducto";
 	}
 	@GetMapping("/mantenimiento/proveedor")
 	public String crudProveedores(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {

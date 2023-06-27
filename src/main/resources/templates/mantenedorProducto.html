@@ -71,57 +71,76 @@
 
 				<!-- FORM ACTUALIZAR -->
 				<form id="formactualizar" action="/producto/acciones/actualizar" method="post" th:object="${producto}" th:if="${updatevalidacion != null}">
-					
+				<!-- Producto -->
 					<div class="form-group">
-			        	<label for="nombre">Nombre:</label>
-			        	<input type="text" th:field="*{nombre}"  class="form-control" id="nombre" name="nombre">
+			        	<label for="producto">Producto:</label>
+			        	<input type="text" th:field="*{des_prod}"  class="form-control" id="producto" name="producto">
 			      	</div>
-			      	<div class="form-group">
-			        	<label for="apellido">Apellido:</label>
-			        	<input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
-			      	</div>
-			      	
-			      	
-			      	
-			      	
-			      	
-			      	<div class="form-group">
-			       	 	<label for="tiposUsuario">Puesto:</label>
-			        	<select class="form-control" id="id_puesto" th:field="*{id_puesto}"   name="Puesto">
-			          		<option value="-1">Seleccione...</option>
-			           		<option th:each="p : ${listaPuestos}" th:value="${p.id_puesto}" th:text="${p.des_puesto}"></option>
-			        	</select>
-			      	</div>
+			      	<!-- Proveedor y Tipo -->
+					<div class="form-row">
+						<!-- Tipo -->
+						<div class="form-group">
+			       	 		<label for="tipoProducto">Tipo Producto:</label>
+			        			<select class="form-control" id="id_tipoprod" th:field="*{id_tipoprod}"   name="Tipo">
+			          				<option value="-1">Seleccione...</option>
+			           				<option th:each="t : ${lstTipo}" th:value="${t.id_tipoprod}" th:text="${t.des_tipoprod}"></option>
+			        			</select>
+			      		</div>
+						<!-- Provedor -->
+						<div class="form-group">
+			       	 		<label for="proveedorProducto">Proveedor:</label>
+			        			<select class="form-control" id="id_proveedor" th:field="*{id_proveedor}"   name="Proveedor">
+			          				<option value="-1">Seleccione...</option>
+			           				<option th:each="pr : ${lstProveedor}" th:value="${pr.id_proveedor}" th:text="${pr.raz_soc}"></option>
+			        			</select>
+			      		</div>
+					</div>     	
+					<!-- Stock y Precio -->
+					<div class="form-row">
+						<!-- Stock -->
+						<div class="form-group">
+			        		<label for="stock">Stock:</label>
+			        		<input type="text" th:field="*{stock}"  class="form-control" id="stock" name="stock">
+			      		</div>
+						<!-- Precio-->
+						<div class="form-group">
+			        		<label for="precio">Precio:</label>
+			        		<input type="text" th:field="*{precio}"  class="form-control" id="precio" name="precio">
+			      		</div>
+					</div>  	
 					<div id="button">
-						<button id="botonActualizar" type="submit" name="mantlista" class="btn btn-primary" value="mantGuardCli">Actualizar</button>
-						<a href="/mantenedor/empleado" class="btn btn-primary"> Nuevo</a>
+						<button id="botonActualizar" type="submit" name="mantlista" class="btn btn-primary" value="mantGuardProd">Actualizar</button>
+						<a href="/mantenedor/producto" class="btn btn-primary"> Nuevo</a>
 					</div>
 				</form>
 				
 				<br><br>
 			</section>
 			<section style="width: 60%">
-				<h2 style="text-align:center">Empleados Registrados</h2>
+				<h2 style="text-align:center">Productos Registrados</h2>
 				<table class="table" style="text-align:center">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Nombre</th>
-							<th>Apellido</th>
-							<th>Puesto</th>
+							<th>Id</th>
+							<th>Producto</th>
+							<th>Proveedor</th>
+							<th>Tipo</th>
+							<th>Stock</th>
+							<th>Precio</th>
 							<th colspan=2>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="e : ${listaEmpleados}">
-							<td th:text="${e.id_empleado}"></td>
-							<td th:text="${e.nombre}">xx</td>
-							<td th:text="${e.apellido}">xx</td>
-							<td th:text="${e.objPuesto.des_puesto}">xx</td>
-							<td><a class="btn btn-info" th:href="@{/empleado/acciones/actualizar/{id}(id=${e.id_empleado})}">Actualizar</a>
+						<tr th:each="p : ${lstProducto}">
+							<td th:text="${p.id_prod}"></td>
+							<td th:text="${p.objProveedor.raz_soc}">xx</td>
+							<td th:text="${p.objTipo.des_tipoprod}">xx</td>
+							<td th:text="${p.stock}">xx</td>
+							<td th:text="${p.precio}">xx</td>
+							<td><a class="btn btn-info" th:href="@{/producto/acciones/actualizar/{id}(id=${p.id_prod})}">Actualizar</a>
 							</td>
 							<td>
-								<a class="btn btn-danger" th:href="@{/empleado/acciones/eliminar/{id}(id=${e.id_empleado})}">Eliminar</a>
+								<a class="btn btn-danger" th:href="@{/producto/acciones/eliminar/{id}(id=${p.id_prod})}">Eliminar</a>
 							</td>
 								</tr>
 					</tbody>
