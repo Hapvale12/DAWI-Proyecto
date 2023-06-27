@@ -20,7 +20,7 @@ public class ProveedorController {
 	@Autowired
 	private IProveedorRepository repoProve;
 
-	@GetMapping("/proveedor/acciones/mantenimiento")
+	
 	public String abrirPagProveedor(Model model) {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("updatevalidacion", null);
@@ -51,7 +51,6 @@ public class ProveedorController {
 		Object fila = repoProve.count();
 		int posicion = (Integer.parseInt(fila.toString())-1);
 		lista.get(posicion).getId_proveedor();
-		proveedor.setId_proveedor(lista.get(posicion).getId_proveedor()+1);
 		try {
 			repoProve.save(proveedor);
 			model.addAttribute("mensaje", "Registro Exitoso");

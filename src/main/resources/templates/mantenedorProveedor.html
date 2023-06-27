@@ -66,7 +66,7 @@
 					</div>
 					<div id="button">
 						<button id="botonActualizar" type="submit" name="mantlista" class="btn btn-primary" value="mantGuardCli">Actualizar</button>
-						<a href="/proveedor/acciones/mantenimiento" class="btn btn-primary"> Nuevo</a>
+						<a href="/mantenimiento/proveedor" class="btn btn-primary"> Nuevo</a>
 					</div>
 				</form>
 				
@@ -81,7 +81,7 @@
 							<th>Codigo</th>
 							<th>Razon Social</th>
 							<th>Ruc</th>
-							<th>Acciones</th>
+							<th colspan=2>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -91,6 +91,8 @@
 							<td th:text="${c.ruc}">xx</td>
 							<td>
 								<a class="btn btn-info" th:href="@{/proveedor/acciones/actualizar/{id}(id=${c.id_proveedor})}">Actualizar</a>
+							</td>
+							<td>
 								<a class="btn btn-info" th:href="@{/proveedor/acciones/eliminar/{id}(id=${c.id_proveedor})}">Eliminar</a>
 							</td>
 						</tr>
