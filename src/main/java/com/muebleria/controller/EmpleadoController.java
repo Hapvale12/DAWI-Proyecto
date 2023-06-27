@@ -91,7 +91,7 @@ public class EmpleadoController {
 			model.addAttribute("listaEmpleados", empRepo.findAll());
 			generarListado(model);
 		}
-		return "pagActualizarEmps";
+		return "empleadoRedirigir";
 	}	
 	@GetMapping("/redirigirEmpleado")
 	public String redirigir(Model model) {

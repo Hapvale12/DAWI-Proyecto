@@ -17,6 +17,8 @@ public class MantenedorController {
 	EmpleadoController empController;
 	@Autowired
 	ProductoController prodController;
+	@Autowired
+	ProveedorController provController;
 	
 	@GetMapping("/mantenedor/cliente")
 	public String crudClientes(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
@@ -32,5 +34,10 @@ public class MantenedorController {
 	public String crudProductos(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
 		prodController.cargaPagProd(model);
 		return "crudproductos";
+	}
+	@GetMapping("/mantenimiento/proveedor")
+	public String crudProveedores(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
+		provController.abrirPagProveedor(model);
+		return "mantenedorproveedor";
 	}
 }

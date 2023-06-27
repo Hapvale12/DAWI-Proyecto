@@ -119,9 +119,14 @@ public class UsuarioController {
 			model.addAttribute("mensaje", "Error al actualizar");
 		}
 		generarListado(model);
+		return "usuarioRedirigir";
+	}	
+	@GetMapping("/redirigirUsuario")
+	public String redirigir(Model model) {
+		cargarMantenimiento(model);
+		model.addAttribute("mensaje", "Actualización exitosa.");
 		return "mantenedorUsuario";
 	}
-	
 	//Abrir Eliminar Usuario
 	@GetMapping("/usuario/acciones/eliminar/{id}")
 	public String FormEliminarCliente(@PathVariable("id") int id, Model model) {
