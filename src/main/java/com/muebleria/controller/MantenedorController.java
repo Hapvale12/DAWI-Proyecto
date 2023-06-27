@@ -30,7 +30,7 @@ public class MantenedorController {
 	}
 	@GetMapping("/mantenedor/producto")
 	public String crudProductos(Model model, HttpServletRequest request,HttpSession session,HttpServletResponse response) {
-		prodController.cargaPagProd(model);
+		prodController.manteProducto(model);
 		return "crudproductos";
 	}
 }

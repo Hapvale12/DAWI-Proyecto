@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Mantenimiento de Usuarios</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"	href="CSS/estilo_listado.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/normalize_index.css">
+<link rel="stylesheet" href="css/estilos_index.css">
+</head>
+<body>
+<div class="titulo">
+	<h1 style="text-align:center">Mantenimiento de Usuarios</h1>
+	<button class="boton btn btn-primary" onclick="Viajar()">Volver a Home</button>
+</div>
+<div>
+		<main id="contenedor">
+			<section style="width: 40%;">
+				<h2 style="text-align:center" th:if="${updatevalidacion == null}">Registrar Usuario</h2>
+				<h2 style="text-align:center" th:if="${updatevalidacion != null}">Actualizar Usuario</h2>
+				
+				<!-- FORM REGISTRAR -->
+				<form action="/usuario/acciones/registrar" method="post" th:object="${Usuario}" th:if="${updatevalidacion == null}">
+					<div style="display:flex; gap:0.5rem;">
+						<p id="ultCod">Ultimo codigo generado:    </p>
+						<p id="codigo" th:text="${ultiId}"></p>
+					</div>
+					<div class="form-group">
+						<label for="inputCod">ID:</label> 
+						<input name="txtcodigohidden" type="text" class="form-control" id="cod_hidden" th:attr="value=${nuevoId}" readonly>
+					</div>
+			      	<div class="form-group">
+			        	<label for="nombre">Nombre:</label>
+			        	<input type="text" th:field="*{nombre}" class="form-control" id="nombre" name="nombre">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="apellido">Apellido:</label>
+			        	<input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
+			      	</div>
+			      	<div class="form-group">
+			        	<label>Usuario:</label>
+			        	<input type="text" th:field="*{usuario}" class="form-control">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="clave">Clave:</label>
+			        	<input type="text" th:field="*{clave}"  class="form-control" id="clave" name="clave">
+			      	</div>
+			      	<div class="form-group">
+			        	<label for="fechaNacimiento">Fecha de Nacimiento:</label>
+			        	<input type="date" th:field="*{fnacim}"      class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+			      	</div>
+			      	<div class="form-group">
+				        <label for="tiposUsuario">Tipo de Usuario:</label>
+				        <select class="form-control" id="tiposUsuario" th:field="*{id_tipousuario}"   name="tiposUsuario">
+				          	<option value="-1">Seleccione...</option>
+				           	<option th:each="c : ${lstTipos}" th:value="${c.id_tipousuario}" th:text="${c.descripcion}"></option>
+				        </select>
+					</div>
+			        <div id="button">
+						<button id="botonGrabar" type="submit"  name="mantlista" class="btn btn-primary" value="mantGuardCli">Registrar</button>
+					</div>
+			    </form>
+			    <div th:class="${claseMensaje}" role="alert" th:text="${mensaje}"></div>
+				
+				<!-- FORM ACTUALIZAR -->
+				<form id="formactualizar" action="/usuario/acciones/actualizar" method="post" th:object="${Usuario}" th:if="${updatevalidacion != null}">
+					<div class="form-group">
+						<label for="inputCod">ID</label> 
+						<input name="txtCodigo" type="text" class="form-control" th:field="*{id_usuario}" readonly> 
+					</div>
+					<div class="form-group">
+			        <label for="nombre">Nombre:</label>
+			        <input type="text" th:field="*{nombre}"  class="form-control" id="nombre" name="nombre">
+			      </div>
+			      <div class="form-group">
+			        <label for="apellido">Apellido:</label>
+			        <input type="text" th:field="*{apellido}"  class="form-control" id="apellido" name="apellido">
+			      </div>
+			      <div class="form-group">
+			        <label>Usuario:</label>
+			        <input type="text" th:field="*{usuario}" class="form-control">
+			      </div>
+			      <div class="form-group">
+			        <label for="clave">Clave:</label>
+			        <input type="text" th:field="*{clave}"  class="form-control" id="clave" name="clave">
+			      </div>
+			      <div class="form-group">
+			        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+			        <input type="date" th:field="*{fnacim}"      class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+			      </div>
+			      <div class="form-group">
+			        <label for="tiposUsuario">Tipo de Usuario:</label>
+			        <select class="form-control" id="tiposUsuario" th:field="*{id_tipousuario}"   name="tiposUsuario">
+			          <option value="-1">Seleccione...</option>
+			           <option th:each="c : ${lstTipos}" th:value="${c.id_tipousuario}" th:text="${c.descripcion}"></option>
+			        </select>
+			      </div>
+					<div id="button">
+						<button id="botonActualizar" type="submit" name="mantlista" class="btn btn-primary" value="mantGuardCli">Actualizar</button>
+						<a href="/usuario/abrir" class="btn btn-primary"> Nuevo</a>
+					</div>
+				</form>
+				
+				<br><br>
+			</section>
+			<section style="width: 60%">
+				<h2 style="text-align:center">Usuarios Registrados</h2>
+				<table class="table" style="text-align:center">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>Usuario</th>
+							<th>Clave</th>
+							<th>F. Nacimiento</th>
+							<th>Tipo de Usuario</th>
+							<th colspan=2>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="u : ${listaUsuarios}">
+							<td th:text="${u.id_usuario}"></td>
+							<td th:text="${u.nombre}">xx</td>
+							<td th:text="${u.apellido}">xx</td>
+							<td th:text="${u.usuario}">xx</td>
+							<td th:text="${u.clave}">xx</td>
+							<td th:text="${u.fnacim}">xx</td>
+							<td th:text="${u.oTipo.descripcion}">xx</td><!--  -->
+							<td>
+								<a class="btn btn-info" th:href="@{/usuario/acciones/actualizar/{id}(id=${u.id_usuario})}">Actualizar</a>
+							</td>
+							<td>
+								<a class="btn btn-danger" th:href="@{/usuario/acciones/eliminar/{id}(id=${u.id_usuario})}">Eliminar</a>
+							</td>
+								</tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
+</div>
+</body>
+
+<style>
+	.titulo{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+	main{
+		display:flex;
+		gap: 3rem;
+	}
+	#radiobuttons{
+		display: flex;
+		margin: 1rem;
+		gap: 1rem;
+		justify-content: center;
+	}
+	#button{
+		display: flex; 
+		flex-direction: row;
+		gap:1rem;
+		justify-content: center;
+	}
+	.boton{
+		text-align: center;
+		border-radius: 10px;
+	}
+	#confirm-delete{
+		display: none;
+	  	position: fixed;
+	  	top: 0;
+	  	left: 0;
+	  	width: 100%;
+	  	height: 100%;
+	  	background-color: rgba(0, 0, 0, 0.5);
+	 	text-align: center;
+	 	vertical-align: middle;
+	}
+	#confirm-delete-content{
+		background-color: white;
+	  	width: 250px;
+	  	height: 120px;
+	  	padding: 20px;
+	  	margin: 100px auto;
+	  	border-radius: 15px;
+	  	background-color: rgba(255, 255, 255, 0.7);
+	  	gap:1rem;
+	}
+	#contenedor{
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+	}
+	body{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		}
+</style>
+	<script type="text/javascript">
+		
+	function Viajar(){
+		location.replace('/home');	
+	}
+		
+	</script>
+</html>

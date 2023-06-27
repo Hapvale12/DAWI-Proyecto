@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import com.muebleria.model.Producto;
 import com.muebleria.repository.IProductoRepository;
 import com.muebleria.repository.IProveedorRepository;
@@ -17,99 +16,104 @@ import com.muebleria.repository.ITipoRepository;
 public class ProductoController {
 	
 	@Autowired
-	private ITipoRepository tipRepo;
+	private ITipoRepository repoTipo;
 	
 	@Autowired
-	private IProveedorRepository proRepo;
+	private IProveedorRepository repoProv;
 	
 	@Autowired
 	private IProductoRepository repoProd;
 	
-	//Cargar pagina producto
-	@GetMapping("/producto/acciones/mantenimiento")
-	public String cargaPagProd(Model model) {
-		cargarComboProd(model);
-		return "crudproductos";
+	//Producto
+	public String manteProducto(Model model) {
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("updatevalidacion", null);
+		generarListado(model);
+		return "mantenedorProducto";
 	}
 	
-	//Listar productos
-	@GetMapping("/producto/mantenimiento/listar")
-	public String generarLista(Model model) {
-		listarProducto(model);
-		return "listarProducto";
+	//Generar listado
+	public String generarListado(Model model) {
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("lstTipo", repoTipo.findAll());
+		model.addAttribute("lstProveedor", repoProv.findAll());
+		return "mantenedorProducto";
 	}
-	
-	//Registrar productos
+		
+	//Registrar Producto
 	@PostMapping("/producto/acciones/registrar")
-	public String registrarProducto(@ModelAttribute Producto producto, Model model) {
-		try {
+	public String registrarProducto(@ModelAttribute("producto") Producto producto, Model model) {
+			try {
 			//Leer los datos ingresados
 			repoProd.save(producto);
 			model.addAttribute("mensaje", "Registro Ok");
-			cargarComboProd(model);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error: ( " + e.getMessage());
+			generarListado(model);
+		} catch (Exception e) {	
+			model.addAttribute("mensaje", "Error al registrar");
+			System.out.println("Error: " + e.getMessage());
+			generarListado(model);
 		}
-		return "crudproductos";
+		return "mantenedorProducto";
 	}
-	
-	//buscar productos
-	@GetMapping("/{id}/acciones/prod/actualizar")
-	public String buscarProductoModForm(@PathVariable("id") int id, Model model) {
+		
+	//Buscar codigo para Actualizar
+	@GetMapping("/producto/acciones/actualizar/{id}")
+	public String buscarProductoxId(@PathVariable("id") int id, Model model) {
+		model.addAttribute("updatevalidacion", "not null");
 		try {
 			Producto producto = repoProd.findById(id).orElse(new Producto());
 			model.addAttribute("producto", producto);
-			model.addAttribute("lstTipo", tipRepo.findAll());
-			model.addAttribute("lstProveedor", proRepo.findAll());
-			return "actualizarProducto";
+			generarListado(model);
+			return "mantenedorProducto";
 		}catch(Exception e) {
-			return "listarProducto";
+			System.out.println(e.getLocalizedMessage());
+			return "mantenedorProducto";
 		}
 	}
-	
-	//Modificar Productos
+
+	//Actualizar
 	@PostMapping("/producto/acciones/actualizar")
-	public String actualizarProducto(@ModelAttribute("producto") Producto producto ,Model model) {
+	public String actualizarProducto(@ModelAttribute("producto") Producto producto, Model model) {
 		try {
 			repoProd.save(producto);
-			model.addAttribute("mensaje", "Actualización Ok");
-			listarProducto(model);
+			model.addAttribute("producto", producto);
+			model.addAttribute("mensaje", "Actualización exitosa.");
+			model.addAttribute("lstProducto", repoProd.findAll());
+			generarListado(model);
 		} catch (Exception e) {
-			System.out.println("Error :( " + e.getMessage());
+			System.out.println("Error : " + e.getMessage());
+			model.addAttribute("mensaje", "Error al actualizar");
+			model.addAttribute("lstProducto", repoProd.findAll());
+			generarListado(model);
 		}
-		return "actualizarProducto";
+		return "pagActualizarProds";
+	}	
+	//Redirigir a producto	
+	@GetMapping("/redirigirProducto")
+	public String redirigir(Model model) {
+		manteProducto(model);
+		model.addAttribute("mensaje", "Actualización exitosa.");
+		model.addAttribute("lstProducto", repoProd.findAll());
+		return "mantenedorProducto";
 	}
 	
-	//Buscar para eliminar producto
-	@GetMapping("/{id}/acciones/prod/eliminar")
-	public String buscarProductoElmForm(@PathVariable("id") int id, Model model) {
+	//Buscar codigo para Eliminar
+	@GetMapping("/producto/acciones/eliminar/{id}")
+	public String buscarProductoEliminarxId(@PathVariable("id") int id, Model model) {
 	    Producto producto = repoProd.findById(id).orElse(null);
 	    model.addAttribute("producto", producto);
 	    return "eliminarProducto";
 	}
-	
+	//Eliminar
 	@PostMapping("/producto/acciones/eliminar")
-	public String eliminarEmpleado(@ModelAttribute("producto") Producto producto, Model model) {
+	public String eliminarProducto(@ModelAttribute("producto") Producto producto, Model model) {
 	    try {
 	        repoProd.delete(producto);
 	        model.addAttribute("mensaje", "Producto eliminado exitosamente");
 	    } catch (Exception e) {
-	        model.addAttribute("mensaje", "Error al eliminar el producto");
-	        System.out.println("Error al eliminar el producto: " + e.getMessage());
+	        model.addAttribute("mensaje", "Error al eliminar al cliente");
 	    }
-	    listarProducto(model);
-	    return "listarProducto";
+	    	generarListado(model);
+		return "mantenedorProducto";
 	}
-	
-	//Metodos
-	void cargarComboProd(Model model) {
-		model.addAttribute("producto", new Producto());
-		model.addAttribute("lstTipo", tipRepo.findAll());
-		model.addAttribute("lstProveedor", proRepo.findAll());
-	}
-	void listarProducto(Model model) {
-		model.addAttribute("lstProducto", repoProd.findAll());
-	}
-
 }
